@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<filterSection formatVersion="1.0">
+	<filter channel="L" fs="8000">
+		<iirBiquad>14332, -26118, 12094, -14847, 6850, 13</iirBiquad>
+		<iirBiquad>17231, -31885, 14752, -31885, 15600, 14</iirBiquad>
+		<iirBiquad>25905, 18858, 10396, -5963, 3287, 13</iirBiquad>
+		<iirBiquad>14027, -23955, 10898, -5654, 2527, 12</iirBiquad>
+		<iirBiquad>8960, 20006, 19333, 20006, 20101, 13</iirBiquad>
+		<iirBiquad>17281, 11588, 7384, 10185, 6877, 14</iirBiquad>
+	</filter>
+	<filter channel="L" fs="11025">
+		<iirBiquad>14352, -26872, 12687, -15281, 7194, 13</iirBiquad>
+		<iirBiquad>17003, -32142, 15191, -32142, 15811, 14</iirBiquad>
+		<iirBiquad>7159, -13612, 17351, -18517, 11415, 13</iirBiquad>
+		<iirBiquad>14674, -26342, 12217, -6411, 2864, 12</iirBiquad>
+		<iirBiquad>16074, 26788, 11898, 26788, 11589, 14</iirBiquad>
+		<iirBiquad>8162, -17809, 10204, -17830, 10153, 13</iirBiquad>
+	</filter>
+	<filter channel="L" fs="12000">
+		<iirBiquad>14356, -27033, 12818, -15373, 7270, 13</iirBiquad>
+		<iirBiquad>16953, -32196, 15286, -32196, 15856, 14</iirBiquad>
+		<iirBiquad>10780, 1135, 32325, -18773, 15005, 13</iirBiquad>
+		<iirBiquad>14813, -26859, 12517, -6570, 2945, 12</iirBiquad>
+		<iirBiquad>15899, 21868, 9352, 21868, 8867, 14</iirBiquad>
+		<iirBiquad>8169, -17348, 15466, -17591, 15200, 13</iirBiquad>
+	</filter>
+	<filter channel="L" fs="16000">
+		<iirBiquad>14367, -27483, 13196, -15631, 7490, 13</iirBiquad>
+		<iirBiquad>16813, -32346, 15557, -32346, 15986, 14</iirBiquad>
+		<iirBiquad>41740, 96126, 65415, 4649, 11582, 12</iirBiquad>
+		<iirBiquad>15202, -28323, 13398, -7011, 3191, 12</iirBiquad>
+		<iirBiquad>31267, 16180, 11014, 16180, 9513, 15</iirBiquad>
+		<iirBiquad>8827, 15376, 19806, 13672, 18737, 13</iirBiquad>
+	</filter>
+	<filter channel="L" fs="22050">
+		<iirBiquad>14376, -27850, 13516, -15841, 7676, 13</iirBiquad>
+		<iirBiquad>16696, -32465, 15782, -32465, 16094, 14</iirBiquad>
+		<iirBiquad>33555, 61173, 28461, 5738, 2484, 12</iirBiquad>
+		<iirBiquad>15517, -29524, 14158, -7359, 3414, 12</iirBiquad>
+		<iirBiquad>31200, -6001, 10044, -6001, 8476, 15</iirBiquad>
+		<iirBiquad>8858, 16693, 7953, 15396, 7322, 13</iirBiquad>
+	</filter>
+	<filter channel="L" fs="24000">
+		<iirBiquad>14378, -27928, 13586, -15886, 7717, 13</iirBiquad>
+		<iirBiquad>16671, -32491, 15830, -32491, 16118, 14</iirBiquad>
+		<iirBiquad>28213, 46996, 20967, 3717, 1804, 12</iirBiquad>
+		<iirBiquad>15584, -29780, 14325, -7432, 3465, 12</iirBiquad>
+		<iirBiquad>31224, -10769, 10385, -10769, 8842, 15</iirBiquad>
+		<iirBiquad>17618, 28439, 12762, 26162, 11719, 14</iirBiquad>
+	</filter>
+	<filter channel="L" fs="32000">
+		<iirBiquad>14384, -28149, 13785, -16012, 7833, 13</iirBiquad>
+		<iirBiquad>16599, -32561, 15968, -32561, 16184, 14</iirBiquad>
+		<iirBiquad>17259, 19542, 8708, -937, 1392, 12</iirBiquad>
+		<iirBiquad>15770, -30502, 14805, -7634, 3612, 12</iirBiquad>
+		<iirBiquad>31368, -24354, 12469, -24354, 11069, 15</iirBiquad>
+		<iirBiquad>17299, 12516, 7544, 11070, 7014, 14</iirBiquad>
+	</filter>
+	<filter channel="L" fs="44100">
+		<iirBiquad>14388, -28329, 13951, -16115, 7930, 13</iirBiquad>
+		<iirBiquad>16540, -32619, 16081, -32619, 16238, 14</iirBiquad>
+		<iirBiquad>23291, 12932, 8674, -7272, 3569, 13</iirBiquad>
+		<iirBiquad>15921, -31090, 15208, -7794, 3738, 12</iirBiquad>
+		<iirBiquad>15791, -17852, 7797, -17852, 7205, 14</iirBiquad>
+		<iirBiquad>17029, -946, 6391, -1816, 6166, 14</iirBiquad>
+	</filter>
+	<filter channel="L" fs="48000">
+		<iirBiquad>14389, -28368, 13987, -16137, 7951, 13</iirBiquad>
+		<iirBiquad>16528, -32631, 16106, -32631, 16250, 14</iirBiquad>
+		<iirBiquad>21402, 8729, 7582, -8242, 3821, 13</iirBiquad>
+		<iirBiquad>15953, -31216, 15295, -7828, 3766, 12</iirBiquad>
+		<iirBiquad>15821, -19081, 8230, -19081, 7667, 14</iirBiquad>
+		<iirBiquad>16971, -3812, 6461, -4571, 6289, 14</iirBiquad>
+	</filter>
+	<filter channel="R" fs="8000">
+		<iirBiquad>6161, 13211, 12522, 16631, 15329, 13</iirBiquad>
+		<iirBiquad>16461, -29836, 13766, -29855, 13824, 14</iirBiquad>
+		<iirBiquad>9271, -17740, 8520, -15627, 7486, 13</iirBiquad>
+		<iirBiquad>17455, 710, 4991, -666, 4684, 14</iirBiquad>
+		<iirBiquad>18269, -17428, 10220, -14237, 8915, 14</iirBiquad>
+		<iirBiquad>17099, -15448, 5407, -15973, 5597, 14</iirBiquad>
+	</filter>
+	<filter channel="R" fs="11025">
+		<iirBiquad>13188, 22185, 9977, 27929, 12780, 14</iirBiquad>
+		<iirBiquad>16439, -30666, 14437, -30676, 14483, 14</iirBiquad>
+		<iirBiquad>9279, -17978, 8726, -15838, 7673, 13</iirBiquad>
+		<iirBiquad>8087, -19451, 15509, -19697, 15158, 13</iirBiquad>
+		<iirBiquad>18512, -23981, 11857, -20203, 10208, 14</iirBiquad>
+		<iirBiquad>16910, -20066, 7271, -20372, 7491, 14</iirBiquad>
+	</filter>
+	<filter channel="R" fs="12000">
+		<iirBiquad>13294, 18559, 8135, 23364, 10595, 14</iirBiquad>
+		<iirBiquad>16435, -30842, 14586, -30851, 14628, 14</iirBiquad>
+		<iirBiquad>9280, -18029, 8772, -15883, 7714, 13</iirBiquad>
+		<iirBiquad>8211, -15282, 23902, -16283, 22920, 13</iirBiquad>
+		<iirBiquad>18562, -25341, 12282, -21436, 10556, 14</iirBiquad>
+		<iirBiquad>16868, -21073, 7761, -21338, 7981, 14</iirBiquad>
+	</filter>
+	<filter channel="R" fs="16000">
+		<iirBiquad>26930, 14265, 10347, 17959, 14162, 15</iirBiquad>
+		<iirBiquad>16422, -31335, 15015, -31340, 15048, 14</iirBiquad>
+		<iirBiquad>9285, -18172, 8900, -16010, 7831, 13</iirBiquad>
+		<iirBiquad>9395, 22043, 21111, 18918, 19188, 13</iirBiquad>
+		<iirBiquad>18699, -29047, 13630, -24781, 11680, 14</iirBiquad>
+		<iirBiquad>16750, -23951, 9347, -24110, 9553, 14</iirBiquad>
+	</filter>
+	<filter channel="R" fs="22050">
+		<iirBiquad>26975, -5317, 9567, -6694, 13236, 15</iirBiquad>
+		<iirBiquad>16411, -31736, 15379, -31738, 15403, 14</iirBiquad>
+		<iirBiquad>9288, -18289, 9008, -16113, 7928, 13</iirBiquad>
+		<iirBiquad>18391, 30574, 13450, 26862, 11745, 14</iirBiquad>
+		<iirBiquad>18804, -31897, 14907, -27337, 12767, 14</iirBiquad>
+		<iirBiquad>16651, -26350, 10901, -26439, 11079, 14</iirBiquad>
+	</filter>
+	<filter channel="R" fs="24000">
+		<iirBiquad>26959, -9525, 9843, -11991, 13563, 15</iirBiquad>
+		<iirBiquad>16409, -31821, 15458, -31823, 15481, 14</iirBiquad>
+		<iirBiquad>9289, -18314, 9031, -16135, 7949, 13</iirBiquad>
+		<iirBiquad>18220, 25065, 10467, 21868, 9107, 14</iirBiquad>
+		<iirBiquad>18825, -32479, 15201, -27857, 13021, 14</iirBiquad>
+		<iirBiquad>16629, -26868, 11267, -26945, 11437, 14</iirBiquad>
+	</filter>
+	<filter channel="R" fs="32000">
+		<iirBiquad>26863, -21315, 11503, -26835, 15533, 15</iirBiquad>
+		<iirBiquad>16402, -32061, 15684, -32062, 15702, 14</iirBiquad>
+		<iirBiquad>9291, -18385, 9097, -16198, 8009, 13</iirBiquad>
+		<iirBiquad>17736, 9637, 5804, 7663, 5183, 14</iirBiquad>
+		<iirBiquad>9441, -17030, 8036, -14631, 6888, 13</iirBiquad>
+		<iirBiquad>16568, -28339, 12373, -28384, 12513, 14</iirBiquad>
+	</filter>
+	<filter channel="R" fs="44100">
+		<iirBiquad>13362, -15383, 6964, -19366, 9206, 14</iirBiquad>
+		<iirBiquad>16397, -32257, 15873, -32257, 15886, 14</iirBiquad>
+		<iirBiquad>9293, -18443, 9151, -16249, 8059, 13</iirBiquad>
+		<iirBiquad>17351, -2558, 5010, -3735, 4799, 14</iirBiquad>
+		<iirBiquad>9464, -17639, 8416, -15170, 7220, 13</iirBiquad>
+		<iirBiquad>16518, -29554, 13364, -29578, 13474, 14</iirBiquad>
+	</filter>
+	<filter channel="R" fs="48000">
+		<iirBiquad>13343, -16372, 7294, -20612, 9596, 14</iirBiquad>
+		<iirBiquad>16396, -32299, 15914, -32299, 15926, 14</iirBiquad>
+		<iirBiquad>9293, -18455, 9163, -16260, 8069, 13</iirBiquad>
+		<iirBiquad>17269, -5134, 5147, -6162, 5005, 14</iirBiquad>
+		<iirBiquad>9468, -17764, 8501, -15280, 7294, 13</iirBiquad>
+		<iirBiquad>16507, -29815, 13587, -29836, 13689, 14</iirBiquad>
+	</filter>
+</filterSection>

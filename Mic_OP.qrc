@@ -1,0 +1,45 @@
+<RCC>
+  <qresource prefix="mic">
+    <file>icon/Vmicro.png</file>
+    <file>icon/ZGmicro.jpg</file>
+    <file>icon/ZGmicro.png</file>
+    <file>icon/OP_2.png</file>
+    <file>icon/tuning.png</file>
+    <file>icon/peak.png</file>
+    <file>icon/HighShelf.png</file>
+    <file>icon/LowShelf.png</file>
+    <file>icon/HighPass.png</file>
+    <file>icon/Filter.png</file>
+    <file>icon/lowpass.png</file>
+    <file>icon/MIC_OP_1.png</file>
+    <file>icon/Bypass.png</file>
+  </qresource>
+  <qresource prefix="OP">
+    <file>icon/LIN.png</file>
+    <file>icon/OP_1.png</file>
+  </qresource>
+  <qresource prefix="control">
+    <file>icon/control/HPH_1.png</file>
+    <file>icon/control/line_in_off.png</file>
+    <file>icon/start.png</file>
+    <file>icon/control/LINE_open.png</file>
+    <file>icon/control/HPH.png</file>
+    <file>icon/control/line_in.png</file>
+    <file>icon/control/mix_in_off.png</file>
+    <file>icon/control/mix_in.png</file>
+    <file>icon/control/mixR+.png</file>
+    <file>icon/control/mix+.png</file>
+    <file>icon/control/LINE.png</file>
+    <file>icon/control/OP1L.png</file>
+    <file>icon/control/OP1R.png</file>
+    <file>icon/control/OP2L.png</file>
+    <file>icon/control/OP2R.png</file>
+    <file>icon/control/LINE_half.png</file>
+    <file>icon/control/OP1+OP2.png</file>
+    <file>icon/control/Mic_op_left.png</file>
+    <file>icon/control/OP1R+OP2R.png</file>
+    <file>icon/control/Mic_op_left_open.png</file>
+    <file>icon/control/Mic_op_right.png</file>
+    <file>icon/control/Mic_op_right_open.png</file>
+  </qresource>
+</RCC>

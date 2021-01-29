@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="notch">
+        <file>peak_filter_ams.png</file>
+        <file>two_order_lowpass.png</file>
+        <file>notch_filter.png</file>
+        <file>peak_filter.png</file>
+    </qresource>
+</RCC>

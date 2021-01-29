@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<filterSection formatVersion="1.0">
+	<filter channel="L" fs="48000">
+		<iirBiquad>14389, -28368, 13987, -16137, 7951, 13</iirBiquad>
+		<iirBiquad>16528, -32631, 16106, -32631, 16250, 14</iirBiquad>
+		<iirBiquad>21402, 8729, 7582, -8242, 3821, 13</iirBiquad>
+		<iirBiquad>15953, -31216, 15295, -7828, 3766, 12</iirBiquad>
+		<iirBiquad>15821, -19081, 8230, -19081, 7667, 14</iirBiquad>
+		<iirBiquad>16971, -3812, 6461, -4571, 6289, 14</iirBiquad>
+	</filter>
+	<filter channel="R" fs="48000">
+		<iirBiquad>13343, -16372, 7294, -20612, 9596, 14</iirBiquad>
+		<iirBiquad>16396, -32299, 15914, -32299, 15926, 14</iirBiquad>
+		<iirBiquad>9293, -18455, 9163, -16260, 8069, 13</iirBiquad>
+		<iirBiquad>17269, -5134, 5147, -6162, 5005, 14</iirBiquad>
+		<iirBiquad>9468, -17764, 8501, -15280, 7294, 13</iirBiquad>
+		<iirBiquad>16507, -29815, 13587, -29836, 13689, 14</iirBiquad>
+	</filter>
+</filterSection>

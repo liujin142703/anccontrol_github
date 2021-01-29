@@ -1,0 +1,18 @@
+<Settings Version="1.0.0.0">
+	<OTPRegisters>
+		<reg nr="0" val="0x80" />
+		<reg nr="1" val="0x00" />
+		<reg nr="2" val="0x80" />
+		<reg nr="3" val="0x00" />
+		<reg nr="4" val="0x00" />
+		<reg nr="5" val="0x00" />
+		<reg nr="6" val="0x80" />
+		<reg nr="7" val="0x00" />
+		<reg nr="10" val="0x00" />
+		<reg nr="11" val="0x00" />
+		<reg nr="12" val="0x80" />
+		<reg nr="13" val="0x80" />
+		<reg nr="14" val="0x00" />
+		<reg nr="15" val="0x80" />
+	</OTPRegisters>
+</Settings>
