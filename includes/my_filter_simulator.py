@@ -45,8 +45,7 @@ class MyFilterSimulator(object):
 
     def my_plotter(self, ax, data1, data2, mode, param_dict):
         out = ax.semilogx(data1, data2, basex=10, **param_dict)
-        ax.grid(True, axis='both', which='minor')
-        ax.grid(True)
+        ax.grid(True, which='both')
         if mode == 'gain':
             ax.set_xlabel("Frequency [Hz]")
             ax.set_ylabel("Gain [dB]")
