@@ -53,7 +53,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="iconSize">
      <size>
@@ -4568,6 +4568,33 @@
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_20">
+             <item>
+              <widget class="QLabel" name="label_76">
+               <property name="text">
+                <string>增益：</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="highpass_gain_spin">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="suffix">
+                <string>dB</string>
+               </property>
+               <property name="minimum">
+                <number>-40</number>
+               </property>
+               <property name="maximum">
+                <number>0</number>
                </property>
               </widget>
              </item>

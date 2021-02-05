@@ -62,6 +62,7 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
         self.two_order_filter_data_02 = dict(C1_value='22n', C2_value='22n', C_value_double='47n', R1_value=r_notch,
                                              R2_value=r_notch, R_half_value=r_notch_half, R_gain_value=0)
         self.one_order_highpass_data = dict(C_value='22n', R_value=r_notch)
+        self.one_order_highpass_data_mode2 = dict(C_value='22n', R_value=r_notch, R2_value='1000k')
         self.one_order_lowpass_data = dict(C_value='22n', R_value=r_notch)
 
         self.op_gain_data = dict(Ra_value=r_op_gain, Rb_value=r_op_gain)
@@ -78,6 +79,8 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
         self.amplitudeSlider.setHidden(True)
         self.frequencySpin.setHidden(True)
         self.frequencySpin_highpass.setHidden(True)
+        self.highpass_gain_spin.setHidden(True)
+        self.label_76.setHidden(True)
         self.label_Slider_value.setText('None')
         # 默认module02参数
         self.pixmapLabel_2.setPixmap(QtGui.QPixmap(':/mic/icon/Bypass.png'))
@@ -141,7 +144,8 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
             lambda: self.set_module_01(self.filter01_radioButton_highpass))
         self.frequencySpin.valueChanged.connect(self.setupC_value)  # 计数器改变时调整电容值
         self.amplitudeSlider.valueChanged.connect(self.setupR_value)  # 滑块位置改变时调整电阻值
-        self.frequencySpin_highpass.valueChanged.connect(self.setupC_value_highpass)  # 高通电容调整信号槽
+        self.frequencySpin_highpass.valueChanged.connect(self.setupC_value_highpass_mode2)  # 高通电容调整信号槽
+        self.highpass_gain_spin.valueChanged.connect(self.setupR2_value_highpass_mode2)  # 高通电容调整信号槽
 
         # filter_02模块单元按键
         self.filter01_radioButton_notch_2.toggled.connect(
@@ -276,6 +280,8 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
             self.amplitudeSlider.setHidden(False)  # UI界面调整
             self.frequencySpin.setHidden(False)
             self.frequencySpin_highpass.setHidden(True)
+            self.highpass_gain_spin.setHidden(True)
+            self.label_76.setHidden(True)
             if self.notch01_status:
                 self.pixmapLabel.setPixmap(QtGui.QPixmap(':/mic/icon/tuning.png'))
             else:
@@ -286,6 +292,8 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
             self.amplitudeSlider.setHidden(True)
             self.frequencySpin.setHidden(True)
             self.frequencySpin_highpass.setHidden(True)
+            self.highpass_gain_spin.setHidden(True)
+            self.label_76.setHidden(True)
             self.label_Slider_value.setText('None')
         if btn.text() == '高通' and btn.isChecked():
             self.pixmapLabel.setPixmap(QtGui.QPixmap(":/mic/icon/HighPass.png"))
@@ -293,6 +301,8 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
             self.amplitudeSlider.setHidden(True)
             self.frequencySpin.setHidden(True)
             self.frequencySpin_highpass.setHidden(False)
+            self.highpass_gain_spin.setHidden(False)
+            self.label_76.setHidden(False)
             self.label_Slider_value.setText('None')
 
     def setupC_value_highpass(self):
@@ -301,6 +311,20 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
         c_value = 1 / (2 * math.pi * self.default_notch_r_value * f)  # 默认电阻2.2k，c_value为浮点进度数值
         self.one_order_highpass_data['C_value'] = c_value2map(c_value)  # E12电容标准取值，str格式,ex:33nf
         # print(self.one_order_highpass_data.items())
+
+    def setupC_value_highpass_mode2(self):
+        """根据选择的中心频率设置电容容值"""
+        f = self.frequencySpin_highpass.value()  # 用户设置频率数值
+        c_value = 1 / (2 * math.pi * self.default_notch_r_value * f)  # 默认电阻2.2k，c_value为浮点进度数值
+        self.one_order_highpass_data_mode2['C_value'] = c_value2map(c_value)  # E12电容标准取值，str格式,ex:33nf
+        # print(self.one_order_highpass_data.items())
+
+    def setupR2_value_highpass_mode2(self):
+        """根据选择的中心频率设置电容容值"""
+        gain = self.highpass_gain_spin.value()  # 用户设置频率数值
+        rate = (10 ** (gain / 20))
+        R2_value = self.default_notch_r_value * (1-rate) / rate
+        self.one_order_highpass_data_mode2['R2_value'] = R_value2map(R2_value)  # E12电容标准取值，str格式,ex:33nf
 
     # module02模块参数设置
     def setupC_value_2(self):
@@ -752,7 +776,7 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
                                      two_order_filter_data=self.two_order_filter_data, module_01=self.module01,
                                      two_order_filter_data_02=self.two_order_filter_data_02, module_02=self.module02,
                                      one_order_lowpass_data=self.one_order_lowpass_data,
-                                     one_order_highpass_data=self.one_order_highpass_data,
+                                     one_order_highpass_data=self.one_order_highpass_data_mode2,
                                      two_order_lowpass_data=self.two_order_lowpass_data,
                                      op_gain_data=self.op_gain_data, module_03=self.module03,
                                      high_shelf_data=self.high_shelf_data, module_04=self.module04,
@@ -814,8 +838,10 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
                     bom.append('R142' + ' ' + self.two_order_filter_data['R_half_value'] + '\n')
                     bom.append('R141' + ' ' + str(self.two_order_filter_data['R_gain_value']) + '\n')
                 elif self.module01 == 'highpass':
-                    bom.append('C145' + ' ' + self.one_order_highpass_data['C_value'] + '\n')
-                    bom.append('R159' + ' ' + self.one_order_highpass_data['R_value'] + '\n')
+                    bom.append('C145' + ' ' + self.one_order_highpass_data_mode2['C_value'] + '\n')
+                    bom.append('R159' + ' ' + self.one_order_highpass_data_mode2['R_value'] + '\n')
+                    bom.append('R139' + ' ' + self.one_order_highpass_data_mode2['R2_value'] + '\n')
+                    bom.append('R140' + ' ' + '0' + '\n')
                 else:
                     bom.append('J29 short' + '\n')
                 # module 02
@@ -966,8 +992,10 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
                     bom.append('R142' + ' ' + self.two_order_filter_data['R_half_value'] + '\n')
                     bom.append('R141' + ' ' + str(self.two_order_filter_data['R_gain_value']) + '\n')
                 elif self.module01 == 'highpass':
-                    bom.append('C145' + ' ' + self.one_order_highpass_data['C_value'] + '\n')
-                    bom.append('R159' + ' ' + self.one_order_highpass_data['R_value'] + '\n')
+                    bom.append('C145' + ' ' + self.one_order_highpass_data_mode2['C_value'] + '\n')
+                    bom.append('R159' + ' ' + self.one_order_highpass_data_mode2['R_value'] + '\n')
+                    bom.append('R139' + ' ' + self.one_order_highpass_data_mode2['R2_value'] + '\n')
+                    bom.append('R140' + ' ' + '0' + '\n')
                 else:
                     bom.append('J29 short' + '\n')
                 # module 02
@@ -1119,8 +1147,10 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
                     bom.append('R190' + ' ' + self.two_order_filter_data['R_half_value'] + '\n')
                     bom.append('R189' + ' ' + str(self.two_order_filter_data['R_gain_value']) + '\n')
                 elif self.module01 == 'highpass':
-                    bom.append('C166' + ' ' + self.one_order_highpass_data['C_value'] + '\n')
-                    bom.append('R195' + ' ' + self.one_order_highpass_data['R_value'] + '\n')
+                    bom.append('C166' + ' ' + self.one_order_highpass_data_mode2['C_value'] + '\n')
+                    bom.append('R195' + ' ' + self.one_order_highpass_data_mode2['R_value'] + '\n')
+                    bom.append('R187' + ' ' + self.one_order_highpass_data_mode2['R2_value'] + '\n')
+                    bom.append('R188' + ' ' + '0' + '\n')
                 else:
                     bom.append('J37 short' + '\n')
                 # module 02
@@ -1271,8 +1301,10 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
                     bom.append('R142' + ' ' + self.two_order_filter_data['R_half_value'] + '\n')
                     bom.append('R141' + ' ' + str(self.two_order_filter_data['R_gain_value']) + '\n')
                 elif self.module01 == 'highpass':
-                    bom.append('C145' + ' ' + self.one_order_highpass_data['C_value'] + '\n')
-                    bom.append('R159' + ' ' + self.one_order_highpass_data['R_value'] + '\n')
+                    bom.append('C145' + ' ' + self.one_order_highpass_data_mode2['C_value'] + '\n')
+                    bom.append('R159' + ' ' + self.one_order_highpass_data_mode2['R_value'] + '\n')
+                    bom.append('R139' + ' ' + self.one_order_highpass_data_mode2['R2_value'] + '\n')
+                    bom.append('R140' + ' ' + '0' + '\n')
                 else:
                     bom.append('J29 short' + '\n')
                 # module 02
@@ -1410,616 +1442,6 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
                         bom.append('R227' + ' ' + self.op_peak_data_2['R_high_cut'] + '\n')
                         bom.append('R229' + ' ' + '0' + '\n')
                         bom.append('R230' + ' ' + '0' + '\n')
-            # if left_channel_02:
-            #     bom.append('LEFT CHANNEL 02: ' + '\n')
-            #     bom.append('J129 short' + '\n')
-            #     # module 01
-            #     if self.module01 == 'notch':
-            #         # postil = ['C2', 'C5', 'C4', 'R4', 'R7', 'R6', 'R5']
-            #         bom.append('C127' + ' ' + self.two_order_filter_data['C1_value'] + '\n')
-            #         bom.append('C128' + ' ' + self.two_order_filter_data['C2_value'] + '\n')
-            #         bom.append('C126' + ' ' + self.two_order_filter_data['C_value_double'] + '\n')
-            #         bom.append('R139' + ' ' + self.two_order_filter_data['R1_value'] + '\n')
-            #         bom.append('R140' + ' ' + self.two_order_filter_data['R2_value'] + '\n')
-            #         bom.append('R142' + ' ' + self.two_order_filter_data['R_half_value'] + '\n')
-            #         bom.append('R141' + ' ' + str(self.two_order_filter_data['R_gain_value']) + '\n')
-            #     elif self.module01 == 'highpass':
-            #         bom.append('C145' + ' ' + self.one_order_highpass_data['C_value'] + '\n')
-            #         bom.append('R159' + ' ' + self.one_order_highpass_data['R_value'] + '\n')
-            #     else:
-            #         bom.append('J29 short' + '\n')
-            #     # module 02
-            #     if self.module02 == 'notch':
-            #         # postil = ['C6', 'C9', 'C7', 'R9', 'R13', 'R12', 'R11']
-            #         bom.append('C130' + ' ' + self.two_order_filter_data_02['C1_value'] + '\n')
-            #         bom.append('C131' + ' ' + self.two_order_filter_data_02['C2_value'] + '\n')
-            #         bom.append('C139' + ' ' + self.two_order_filter_data_02['C_value_double'] + '\n')
-            #         bom.append('R143' + ' ' + self.two_order_filter_data_02['R1_value'] + '\n')
-            #         bom.append('R144' + ' ' + self.two_order_filter_data_02['R2_value'] + '\n')
-            #         bom.append('R146' + ' ' + self.two_order_filter_data_02['R_half_value'] + '\n')
-            #         bom.append('R145' + ' ' + str(self.two_order_filter_data_02['R_gain_value']) + '\n')
-            #     elif self.module02 == 'lowpass':
-            #         bom.append('C146' + ' ' + self.one_order_lowpass_data['C_value'] + '\n')
-            #         bom.append('R160' + ' ' + self.one_order_lowpass_data['R_value'] + '\n')
-            #     else:
-            #         bom.append('J30 short' + '\n')
-            #     # module 03
-            #     if self.module03 == 'op_one_order':
-            #         # self.op_gain_data = dict(Ra_value='20k', Rb_value='20k')
-            #         bom.append('R147' + ' ' + '0' + '\n')
-            #         bom.append('R148' + ' ' + self.op_gain_data['Ra_value'] + '\n')
-            #         bom.append('R161' + ' ' + self.op_gain_data['Rb_value'] + '\n')
-            #         bom.append('R157' + ' ' + '0' + '\n')
-            #     else:
-            #         # self.two_order_lowpass_data = dict(R1_value='27k', R2_value='27k', R3_value='13k', C1_value='4.7n',
-            #         #                                    C2_value='12n')
-            #         bom.append('R147' + ' ' + self.two_order_lowpass_data['R1_value'] + '\n')
-            #         bom.append('R148' + ' ' + '0' + '\n')
-            #         bom.append('R157' + ' ' + self.two_order_lowpass_data['R3_value'] + '\n')
-            #         bom.append('R158' + ' ' + self.two_order_lowpass_data['R2_value'] + '\n')
-            #         bom.append('C132' + ' ' + self.two_order_lowpass_data['C2_value'] + '\n')
-            #         bom.append('C138' + ' ' + self.two_order_lowpass_data['C1_value'] + '\n')
-            #     # module 04
-            #     if self.module04 == 'high_shelf':
-            #         # self.high_shelf_data = dict(C_value='680p', R_value='220k')
-            #         bom.append('R149' + ' ' + self.high_shelf_data['R_value'] + '\n')
-            #         bom.append('C133' + ' ' + self.high_shelf_data['C_value'] + '\n')
-            #     # module 05
-            #     if self.module05 == 'low_shelf':
-            #         # self.low_shelf_data = dict(C_value='680p', R_value='220k')
-            #         bom.append('C139' + ' ' + self.low_shelf_data['C_value'] + '\n')
-            #         bom.append('R162' + ' ' + self.low_shelf_data['R_value'] + '\n')
-            #     # module 06
-            #     if self.module06 == 'op_lowpass':
-            #         # self.op_lowpass_data = dict(C_value='8.2n')
-            #         bom.append('C140' + ' ' + self.op_lowpass_data['C_value'] + '\n')
-            #     # module 07
-            #     if self.module07 == 'peak':
-            #         # self.op_peak_data = dict(C1_value='12n', C2_value='12n', C_value_double='27n', R1_value='20k',
-            #         #                          R2_value='20k',R_half_value='10k', R_gain_value=0, R_high_cut='39k')
-            #         bom.append('C136' + ' ' + self.op_peak_data['C1_value'] + '\n')
-            #         bom.append('C137' + ' ' + self.op_peak_data['C2_value'] + '\n')
-            #         bom.append('C134' + ' ' + self.op_peak_data['C_value_double'] + '\n')
-            #         bom.append('R150' + ' ' + self.op_peak_data['R1_value'] + '\n')
-            #         bom.append('R151' + ' ' + self.op_peak_data['R2_value'] + '\n')
-            #         bom.append('R154' + ' ' + self.op_peak_data['R_half_value'] + '\n')
-            #         bom.append('R152' + ' ' + str(self.op_peak_data['R_gain_value']) + '\n')
-            #         bom.append('R153' + ' ' + self.op_peak_data['R_high_cut'] + '\n')
-            #         bom.append('R155' + ' ' + '0' + '\n')
-            #         bom.append('R156' + ' ' + '0' + '\n')
-            #
-            #     # OP 02
-            #     if self.op_model == 'two_op':
-            #         bom.append('J34 short' + '\n')
-            #         # module 11
-            #         if self.module11 == 'notch':
-            #             bom.append('C142' + ' ' + self.two_order_filter_data_11['C1_value'] + '\n')
-            #             bom.append('C143' + ' ' + self.two_order_filter_data_11['C2_value'] + '\n')
-            #             bom.append('C141' + ' ' + self.two_order_filter_data_11['C_value_double'] + '\n')
-            #             bom.append('R163' + ' ' + self.two_order_filter_data_11['R1_value'] + '\n')
-            #             bom.append('R164' + ' ' + self.two_order_filter_data_11['R2_value'] + '\n')
-            #             bom.append('R166' + ' ' + self.two_order_filter_data_11['R_half_value'] + '\n')
-            #             bom.append('R165' + ' ' + str(self.two_order_filter_data_11['R_gain_value']) + '\n')
-            #         elif self.module11 == 'highpass':
-            #             bom.append('C149' + ' ' + self.one_order_highpass_data_2['C_value'] + '\n')
-            #             bom.append('R171' + ' ' + self.one_order_highpass_data_2['R_value'] + '\n')
-            #         else:
-            #             bom.append('J35 short' + '\n')
-            #         # module 12
-            #         if self.module12 == 'notch':
-            #             bom.append('C147' + ' ' + self.two_order_filter_data_12['C1_value'] + '\n')
-            #             bom.append('C148' + ' ' + self.two_order_filter_data_12['C2_value'] + '\n')
-            #             bom.append('C144' + ' ' + self.two_order_filter_data_12['C_value_double'] + '\n')
-            #             bom.append('R167' + ' ' + self.two_order_filter_data_12['R1_value'] + '\n')
-            #             bom.append('R168' + ' ' + self.two_order_filter_data_12['R2_value'] + '\n')
-            #             bom.append('R170' + ' ' + self.two_order_filter_data_12['R_half_value'] + '\n')
-            #             bom.append('R169' + ' ' + str(self.two_order_filter_data_12['R_gain_value']) + '\n')
-            #         elif self.module12 == 'lowpass':
-            #             bom.append('C150' + ' ' + self.one_order_lowpass_data_2['C_value'] + '\n')
-            #             bom.append('R172' + ' ' + self.one_order_lowpass_data_2['R_value'] + '\n')
-            #         else:
-            #             bom.append('J36 short' + '\n')
-            #         # module 13
-            #         if self.module13 == 'op_one_order':
-            #             # self.op_gain_data_2 = dict(Ra_value='20k', Rb_value='20k')
-            #             bom.append('R173' + ' ' + '0' + '\n')
-            #             bom.append('R174' + ' ' + self.op_gain_data_2['Ra_value'] + '\n')
-            #             bom.append('R185' + ' ' + self.op_gain_data_2['Rb_value'] + '\n')
-            #             bom.append('R183' + ' ' + '0' + '\n')
-            #         else:
-            #             # self.two_order_lowpass_data_2 = dict(R1_value='27k', R2_value='27k', R3_value='13k', C1_value='4.7n',
-            #             #                                    C2_value='12n')
-            #             bom.append('R173' + ' ' + self.two_order_lowpass_data_2['R1_value'] + '\n')
-            #             bom.append('R174' + ' ' + '0' + '\n')
-            #             bom.append('R183' + ' ' + self.two_order_lowpass_data_2['R3_value'] + '\n')
-            #             bom.append('R184' + ' ' + self.two_order_lowpass_data_2['R2_value'] + '\n')
-            #             bom.append('C151' + ' ' + self.two_order_lowpass_data_2['C2_value'] + '\n')
-            #             bom.append('C157' + ' ' + self.two_order_lowpass_data_2['C1_value'] + '\n')
-            #         # module 14
-            #         if self.module14 == 'high_shelf':
-            #             # self.high_shelf_data_2 = dict(C_value='680p', R_value='220k')
-            #             bom.append('R175' + ' ' + self.high_shelf_data_2['R_value'] + '\n')
-            #             bom.append('C152' + ' ' + self.high_shelf_data_2['C_value'] + '\n')
-            #         # module 15
-            #         if self.module15 == 'low_shelf':
-            #             # self.low_shelf_data_2 = dict(C_value='680p', R_value='220k')
-            #             bom.append('C158' + ' ' + self.low_shelf_data_2['C_value'] + '\n')
-            #             bom.append('R186' + ' ' + self.low_shelf_data_2['R_value'] + '\n')
-            #         # module 16
-            #         if self.module16 == 'op_lowpass':
-            #             # self.op_lowpass_data_2 = dict(C_value='8.2n')
-            #             bom.append('C159' + ' ' + self.op_lowpass_data_2['C_value'] + '\n')
-            #         # module 17
-            #         if self.module17 == 'peak':
-            #             # self.op_peak_data_2 = dict(C1_value='12n', C2_value='12n', C_value_double='27n', R1_value='20k',
-            #             #                          R2_value='20k',R_half_value='10k', R_gain_value=0, R_high_cut='39k')
-            #             bom.append('C155' + ' ' + self.op_peak_data_2['C1_value'] + '\n')
-            #             bom.append('C156' + ' ' + self.op_peak_data_2['C2_value'] + '\n')
-            #             bom.append('C153' + ' ' + self.op_peak_data_2['C_value_double'] + '\n')
-            #             bom.append('R176' + ' ' + self.op_peak_data_2['R1_value'] + '\n')
-            #             bom.append('R177' + ' ' + self.op_peak_data_2['R2_value'] + '\n')
-            #             bom.append('R180' + ' ' + self.op_peak_data_2['R_half_value'] + '\n')
-            #             bom.append('R178' + ' ' + str(self.op_peak_data_2['R_gain_value']) + '\n')
-            #             bom.append('R179' + ' ' + self.op_peak_data_2['R_high_cut'] + '\n')
-            #             bom.append('R181' + ' ' + '0' + '\n')
-            #             bom.append('R182' + ' ' + '0' + '\n')
-            #
-            #     bom.append('LEFT CHANNEL: ' + '\n')
-            #     # module 01
-            #     if self.module01 == 'notch':
-            #         # postil = ['C2', 'C5', 'C4', 'R4', 'R7', 'R6', 'R5']
-            #         bom.append('C127' + ' ' + self.two_order_filter_data['C1_value'] + '\n')
-            #         bom.append('C128' + ' ' + self.two_order_filter_data['C2_value'] + '\n')
-            #         bom.append('C126' + ' ' + self.two_order_filter_data['C_value_double'] + '\n')
-            #         bom.append('R139' + ' ' + self.two_order_filter_data['R1_value'] + '\n')
-            #         bom.append('R140' + ' ' + self.two_order_filter_data['R2_value'] + '\n')
-            #         bom.append('R142' + ' ' + self.two_order_filter_data['R_half_value'] + '\n')
-            #         bom.append('R141' + ' ' + str(self.two_order_filter_data['R_gain_value']) + '\n')
-            #     elif self.module01 == 'highpass':
-            #         bom.append('C145' + ' ' + self.one_order_highpass_data['C_value'] + '\n')
-            #         bom.append('R159' + ' ' + self.one_order_highpass_data['R_value'] + '\n')
-            #     else:
-            #         bom.append('J29 short' + '\n')
-            #     # module 02
-            #     if self.module02 == 'notch':
-            #         # postil = ['C6', 'C9', 'C7', 'R9', 'R13', 'R12', 'R11']
-            #         bom.append('C130' + ' ' + self.two_order_filter_data_02['C1_value'] + '\n')
-            #         bom.append('C131' + ' ' + self.two_order_filter_data_02['C2_value'] + '\n')
-            #         bom.append('C139' + ' ' + self.two_order_filter_data_02['C_value_double'] + '\n')
-            #         bom.append('R143' + ' ' + self.two_order_filter_data_02['R1_value'] + '\n')
-            #         bom.append('R144' + ' ' + self.two_order_filter_data_02['R2_value'] + '\n')
-            #         bom.append('R146' + ' ' + self.two_order_filter_data_02['R_half_value'] + '\n')
-            #         bom.append('R145' + ' ' + str(self.two_order_filter_data_02['R_gain_value']) + '\n')
-            #     elif self.module02 == 'lowpass':
-            #         bom.append('C146' + ' ' + self.one_order_lowpass_data['C_value'] + '\n')
-            #         bom.append('R160' + ' ' + self.one_order_lowpass_data['R_value'] + '\n')
-            #     else:
-            #         bom.append('J30 short' + '\n')
-            #     # module 03
-            #     if self.module03 == 'op_one_order':
-            #         # self.op_gain_data = dict(Ra_value='20k', Rb_value='20k')
-            #         bom.append('R147' + ' ' + '0' + '\n')
-            #         bom.append('R148' + ' ' + self.op_gain_data['Ra_value'] + '\n')
-            #         bom.append('R161' + ' ' + self.op_gain_data['Rb_value'] + '\n')
-            #         bom.append('R157' + ' ' + '0' + '\n')
-            #     else:
-            #         # self.two_order_lowpass_data = dict(R1_value='27k', R2_value='27k', R3_value='13k', C1_value='4.7n',
-            #         #                                    C2_value='12n')
-            #         bom.append('R147' + ' ' + self.two_order_lowpass_data['R1_value'] + '\n')
-            #         bom.append('R148' + ' ' + '0' + '\n')
-            #         bom.append('R157' + ' ' + self.two_order_lowpass_data['R3_value'] + '\n')
-            #         bom.append('R208' + ' ' + self.two_order_lowpass_data['R2_value'] + '\n')
-            #         bom.append('C132' + ' ' + self.two_order_lowpass_data['C2_value'] + '\n')
-            #         bom.append('C138' + ' ' + self.two_order_lowpass_data['C1_value'] + '\n')
-            #     # module 04
-            #     if self.module04 == 'high_shelf':
-            #         # self.high_shelf_data = dict(C_value='680p', R_value='220k')
-            #         bom.append('R149' + ' ' + self.high_shelf_data['R_value'] + '\n')
-            #         bom.append('C133' + ' ' + self.high_shelf_data['C_value'] + '\n')
-            #     # module 05
-            #     if self.module05 == 'low_shelf':
-            #         # self.low_shelf_data = dict(C_value='680p', R_value='220k')
-            #         bom.append('C139' + ' ' + self.low_shelf_data['C_value'] + '\n')
-            #         bom.append('R162' + ' ' + self.low_shelf_data['R_value'] + '\n')
-            #     # module 06
-            #     if self.module06 == 'op_lowpass':
-            #         # self.op_lowpass_data = dict(C_value='8.2n')
-            #         bom.append('C140' + ' ' + self.op_lowpass_data['C_value'] + '\n')
-            #     # module 07
-            #     if self.module07 == 'peak':
-            #         # self.op_peak_data = dict(C1_value='12n', C2_value='12n', C_value_double='27n', R1_value='20k',
-            #         #                          R2_value='20k',R_half_value='10k', R_gain_value=0, R_high_cut='39k')
-            #         bom.append('C136' + ' ' + self.op_peak_data['C1_value'] + '\n')
-            #         bom.append('C137' + ' ' + self.op_peak_data['C2_value'] + '\n')
-            #         bom.append('C134' + ' ' + self.op_peak_data['C_value_double'] + '\n')
-            #         bom.append('R150' + ' ' + self.op_peak_data['R1_value'] + '\n')
-            #         bom.append('R151' + ' ' + self.op_peak_data['R2_value'] + '\n')
-            #         bom.append('R154' + ' ' + self.op_peak_data['R_half_value'] + '\n')
-            #         bom.append('R152' + ' ' + str(self.op_peak_data['R_gain_value']) + '\n')
-            #         bom.append('R153' + ' ' + self.op_peak_data['R_high_cut'] + '\n')
-            #         bom.append('R155' + ' ' + '0' + '\n')
-            #         bom.append('R156' + ' ' + '0' + '\n')
-            #
-            #     # OP 02
-            #     if self.op_model == 'two_op':
-            #         bom.append('J34 short' + '\n')
-            #         # module 11
-            #         if self.module11 == 'notch':
-            #             bom.append('C142' + ' ' + self.two_order_filter_data_11['C1_value'] + '\n')
-            #             bom.append('C143' + ' ' + self.two_order_filter_data_11['C2_value'] + '\n')
-            #             bom.append('C141' + ' ' + self.two_order_filter_data_11['C_value_double'] + '\n')
-            #             bom.append('R163' + ' ' + self.two_order_filter_data_11['R1_value'] + '\n')
-            #             bom.append('R164' + ' ' + self.two_order_filter_data_11['R2_value'] + '\n')
-            #             bom.append('R166' + ' ' + self.two_order_filter_data_11['R_half_value'] + '\n')
-            #             bom.append('R165' + ' ' + str(self.two_order_filter_data_11['R_gain_value']) + '\n')
-            #         elif self.module11 == 'highpass':
-            #             bom.append('C149' + ' ' + self.one_order_highpass_data_2['C_value'] + '\n')
-            #             bom.append('R171' + ' ' + self.one_order_highpass_data_2['R_value'] + '\n')
-            #         else:
-            #             bom.append('J35 short' + '\n')
-            #         # module 12
-            #         if self.module12 == 'notch':
-            #             bom.append('C147' + ' ' + self.two_order_filter_data_12['C1_value'] + '\n')
-            #             bom.append('C148' + ' ' + self.two_order_filter_data_12['C2_value'] + '\n')
-            #             bom.append('C144' + ' ' + self.two_order_filter_data_12['C_value_double'] + '\n')
-            #             bom.append('R167' + ' ' + self.two_order_filter_data_12['R1_value'] + '\n')
-            #             bom.append('R168' + ' ' + self.two_order_filter_data_12['R2_value'] + '\n')
-            #             bom.append('R170' + ' ' + self.two_order_filter_data_12['R_half_value'] + '\n')
-            #             bom.append('R169' + ' ' + str(self.two_order_filter_data_12['R_gain_value']) + '\n')
-            #         elif self.module12 == 'lowpass':
-            #             bom.append('C150' + ' ' + self.one_order_lowpass_data_2['C_value'] + '\n')
-            #             bom.append('R172' + ' ' + self.one_order_lowpass_data_2['R_value'] + '\n')
-            #         else:
-            #             bom.append('J36 short' + '\n')
-            #         # module 13
-            #         if self.module13 == 'op_one_order':
-            #             # self.op_gain_data_2 = dict(Ra_value='20k', Rb_value='20k')
-            #             bom.append('R173' + ' ' + '0' + '\n')
-            #             bom.append('R174' + ' ' + self.op_gain_data_2['Ra_value'] + '\n')
-            #             bom.append('R185' + ' ' + self.op_gain_data_2['Rb_value'] + '\n')
-            #             bom.append('R183' + ' ' + '0' + '\n')
-            #         else:
-            #             # self.two_order_lowpass_data_2 = dict(R1_value='27k', R2_value='27k', R3_value='13k', C1_value='4.7n',
-            #             #                                    C2_value='12n')
-            #             bom.append('R173' + ' ' + self.two_order_lowpass_data_2['R1_value'] + '\n')
-            #             bom.append('R174' + ' ' + '0' + '\n')
-            #             bom.append('R183' + ' ' + self.two_order_lowpass_data_2['R3_value'] + '\n')
-            #             bom.append('R184' + ' ' + self.two_order_lowpass_data_2['R2_value'] + '\n')
-            #             bom.append('C151' + ' ' + self.two_order_lowpass_data_2['C2_value'] + '\n')
-            #             bom.append('C157' + ' ' + self.two_order_lowpass_data_2['C1_value'] + '\n')
-            #         # module 14
-            #         if self.module14 == 'high_shelf':
-            #             # self.high_shelf_data_2 = dict(C_value='680p', R_value='220k')
-            #             bom.append('R175' + ' ' + self.high_shelf_data_2['R_value'] + '\n')
-            #             bom.append('C152' + ' ' + self.high_shelf_data_2['C_value'] + '\n')
-            #         # module 15
-            #         if self.module15 == 'low_shelf':
-            #             # self.low_shelf_data_2 = dict(C_value='680p', R_value='220k')
-            #             bom.append('C158' + ' ' + self.low_shelf_data_2['C_value'] + '\n')
-            #             bom.append('R186' + ' ' + self.low_shelf_data_2['R_value'] + '\n')
-            #         # module 16
-            #         if self.module16 == 'op_lowpass':
-            #             # self.op_lowpass_data_2 = dict(C_value='8.2n')
-            #             bom.append('C159' + ' ' + self.op_lowpass_data_2['C_value'] + '\n')
-            #         # module 17
-            #         if self.module17 == 'peak':
-            #             # self.op_peak_data_2 = dict(C1_value='12n', C2_value='12n', C_value_double='27n', R1_value='20k',
-            #             #                          R2_value='20k',R_half_value='10k', R_gain_value=0, R_high_cut='39k')
-            #             bom.append('C155' + ' ' + self.op_peak_data_2['C1_value'] + '\n')
-            #             bom.append('C156' + ' ' + self.op_peak_data_2['C2_value'] + '\n')
-            #             bom.append('C153' + ' ' + self.op_peak_data_2['C_value_double'] + '\n')
-            #             bom.append('R176' + ' ' + self.op_peak_data_2['R1_value'] + '\n')
-            #             bom.append('R177' + ' ' + self.op_peak_data_2['R2_value'] + '\n')
-            #             bom.append('R180' + ' ' + self.op_peak_data_2['R_half_value'] + '\n')
-            #             bom.append('R178' + ' ' + str(self.op_peak_data_2['R_gain_value']) + '\n')
-            #             bom.append('R179' + ' ' + self.op_peak_data_2['R_high_cut'] + '\n')
-            #             bom.append('R181' + ' ' + '0' + '\n')
-            #             bom.append('R182' + ' ' + '0' + '\n')
-            # if right_channel_02:
-            #     bom.append('RIGHT CHANNEL 02: ' + '\n')
-            #     bom.append('J139 short' + '\n')
-            #     # module 01
-            #     if self.module01 == 'notch':
-            #         # postil = ['C2', 'C5', 'C4', 'R4', 'R7', 'R6', 'R5']
-            #         bom.append('C161' + ' ' + self.two_order_filter_data['C1_value'] + '\n')
-            #         bom.append('C162' + ' ' + self.two_order_filter_data['C2_value'] + '\n')
-            #         bom.append('C160' + ' ' + self.two_order_filter_data['C_value_double'] + '\n')
-            #         bom.append('R187' + ' ' + self.two_order_filter_data['R1_value'] + '\n')
-            #         bom.append('R188' + ' ' + self.two_order_filter_data['R2_value'] + '\n')
-            #         bom.append('R190' + ' ' + self.two_order_filter_data['R_half_value'] + '\n')
-            #         bom.append('R189' + ' ' + str(self.two_order_filter_data['R_gain_value']) + '\n')
-            #     elif self.module01 == 'highpass':
-            #         bom.append('C166' + ' ' + self.one_order_highpass_data['C_value'] + '\n')
-            #         bom.append('R195' + ' ' + self.one_order_highpass_data['R_value'] + '\n')
-            #     else:
-            #         bom.append('J37 short' + '\n')
-            #     # module 02
-            #     if self.module02 == 'notch':
-            #         # postil = ['C6', 'C9', 'C7', 'R9', 'R13', 'R12', 'R11']
-            #         bom.append('C164' + ' ' + self.two_order_filter_data_02['C1_value'] + '\n')
-            #         bom.append('C165' + ' ' + self.two_order_filter_data_02['C2_value'] + '\n')
-            #         bom.append('C163' + ' ' + self.two_order_filter_data_02['C_value_double'] + '\n')
-            #         bom.append('R191' + ' ' + self.two_order_filter_data_02['R1_value'] + '\n')
-            #         bom.append('R192' + ' ' + self.two_order_filter_data_02['R2_value'] + '\n')
-            #         bom.append('R194' + ' ' + self.two_order_filter_data_02['R_half_value'] + '\n')
-            #         bom.append('R193' + ' ' + str(self.two_order_filter_data_02['R_gain_value']) + '\n')
-            #     elif self.module02 == 'lowpass':
-            #         bom.append('C167' + ' ' + self.one_order_lowpass_data['C_value'] + '\n')
-            #         bom.append('R196' + ' ' + self.one_order_lowpass_data['R_value'] + '\n')
-            #     else:
-            #         bom.append('J40 short' + '\n')
-            #     # module 03
-            #     if self.module03 == 'op_one_order':
-            #         # self.op_gain_data = dict(Ra_value='20k', Rb_value='20k')
-            #         bom.append('R197' + ' ' + '0' + '\n')
-            #         bom.append('R198' + ' ' + self.op_gain_data['Ra_value'] + '\n')
-            #         bom.append('R209' + ' ' + self.op_gain_data['Rb_value'] + '\n')
-            #         bom.append('R207' + ' ' + '0' + '\n')
-            #     else:
-            #         # self.two_order_lowpass_data = dict(R1_value='27k', R2_value='27k', R3_value='13k', C1_value='4.7n',
-            #         #                                    C2_value='12n')
-            #         bom.append('R197' + ' ' + self.two_order_lowpass_data['R1_value'] + '\n')
-            #         bom.append('R198' + ' ' + '0' + '\n')
-            #         bom.append('R207' + ' ' + self.two_order_lowpass_data['R3_value'] + '\n')
-            #         bom.append('R208' + ' ' + self.two_order_lowpass_data['R2_value'] + '\n')
-            #         bom.append('C168' + ' ' + self.two_order_lowpass_data['C2_value'] + '\n')
-            #         bom.append('C174' + ' ' + self.two_order_lowpass_data['C1_value'] + '\n')
-            #     # module 04
-            #     if self.module04 == 'high_shelf':
-            #         # self.high_shelf_data = dict(C_value='680p', R_value='220k')
-            #         bom.append('R149' + ' ' + self.high_shelf_data['R_value'] + '\n')
-            #         bom.append('C133' + ' ' + self.high_shelf_data['C_value'] + '\n')
-            #     # module 05
-            #     if self.module05 == 'low_shelf':
-            #         # self.low_shelf_data = dict(C_value='680p', R_value='220k')
-            #         bom.append('C139' + ' ' + self.low_shelf_data['C_value'] + '\n')
-            #         bom.append('R162' + ' ' + self.low_shelf_data['R_value'] + '\n')
-            #     # module 06
-            #     if self.module06 == 'op_lowpass':
-            #         # self.op_lowpass_data = dict(C_value='8.2n')
-            #         bom.append('C140' + ' ' + self.op_lowpass_data['C_value'] + '\n')
-            #     # module 07
-            #     if self.module07 == 'peak':
-            #         # self.op_peak_data = dict(C1_value='12n', C2_value='12n', C_value_double='27n', R1_value='20k',
-            #         #                          R2_value='20k',R_half_value='10k', R_gain_value=0, R_high_cut='39k')
-            #         bom.append('C136' + ' ' + self.op_peak_data['C1_value'] + '\n')
-            #         bom.append('C137' + ' ' + self.op_peak_data['C2_value'] + '\n')
-            #         bom.append('C134' + ' ' + self.op_peak_data['C_value_double'] + '\n')
-            #         bom.append('R150' + ' ' + self.op_peak_data['R1_value'] + '\n')
-            #         bom.append('R151' + ' ' + self.op_peak_data['R2_value'] + '\n')
-            #         bom.append('R154' + ' ' + self.op_peak_data['R_half_value'] + '\n')
-            #         bom.append('R152' + ' ' + str(self.op_peak_data['R_gain_value']) + '\n')
-            #         bom.append('R153' + ' ' + self.op_peak_data['R_high_cut'] + '\n')
-            #         bom.append('R155' + ' ' + '0' + '\n')
-            #         bom.append('R156' + ' ' + '0' + '\n')
-            #
-            #     # OP 02
-            #     if self.op_model == 'two_op':
-            #         bom.append('J34 short' + '\n')
-            #         # module 11
-            #         if self.module11 == 'notch':
-            #             bom.append('C142' + ' ' + self.two_order_filter_data_11['C1_value'] + '\n')
-            #             bom.append('C143' + ' ' + self.two_order_filter_data_11['C2_value'] + '\n')
-            #             bom.append('C141' + ' ' + self.two_order_filter_data_11['C_value_double'] + '\n')
-            #             bom.append('R163' + ' ' + self.two_order_filter_data_11['R1_value'] + '\n')
-            #             bom.append('R164' + ' ' + self.two_order_filter_data_11['R2_value'] + '\n')
-            #             bom.append('R166' + ' ' + self.two_order_filter_data_11['R_half_value'] + '\n')
-            #             bom.append('R165' + ' ' + str(self.two_order_filter_data_11['R_gain_value']) + '\n')
-            #         elif self.module11 == 'highpass':
-            #             bom.append('C149' + ' ' + self.one_order_highpass_data_2['C_value'] + '\n')
-            #             bom.append('R171' + ' ' + self.one_order_highpass_data_2['R_value'] + '\n')
-            #         else:
-            #             bom.append('J35 short' + '\n')
-            #         # module 12
-            #         if self.module12 == 'notch':
-            #             bom.append('C147' + ' ' + self.two_order_filter_data_12['C1_value'] + '\n')
-            #             bom.append('C148' + ' ' + self.two_order_filter_data_12['C2_value'] + '\n')
-            #             bom.append('C144' + ' ' + self.two_order_filter_data_12['C_value_double'] + '\n')
-            #             bom.append('R167' + ' ' + self.two_order_filter_data_12['R1_value'] + '\n')
-            #             bom.append('R168' + ' ' + self.two_order_filter_data_12['R2_value'] + '\n')
-            #             bom.append('R170' + ' ' + self.two_order_filter_data_12['R_half_value'] + '\n')
-            #             bom.append('R169' + ' ' + str(self.two_order_filter_data_12['R_gain_value']) + '\n')
-            #         elif self.module12 == 'lowpass':
-            #             bom.append('C150' + ' ' + self.one_order_lowpass_data_2['C_value'] + '\n')
-            #             bom.append('R172' + ' ' + self.one_order_lowpass_data_2['R_value'] + '\n')
-            #         else:
-            #             bom.append('J36 short' + '\n')
-            #         # module 13
-            #         if self.module13 == 'op_one_order':
-            #             # self.op_gain_data_2 = dict(Ra_value='20k', Rb_value='20k')
-            #             bom.append('R173' + ' ' + '0' + '\n')
-            #             bom.append('R174' + ' ' + self.op_gain_data_2['Ra_value'] + '\n')
-            #             bom.append('R185' + ' ' + self.op_gain_data_2['Rb_value'] + '\n')
-            #             bom.append('R183' + ' ' + '0' + '\n')
-            #         else:
-            #             # self.two_order_lowpass_data_2 = dict(R1_value='27k', R2_value='27k', R3_value='13k', C1_value='4.7n',
-            #             #                                    C2_value='12n')
-            #             bom.append('R173' + ' ' + self.two_order_lowpass_data_2['R1_value'] + '\n')
-            #             bom.append('R174' + ' ' + '0' + '\n')
-            #             bom.append('R183' + ' ' + self.two_order_lowpass_data_2['R3_value'] + '\n')
-            #             bom.append('R184' + ' ' + self.two_order_lowpass_data_2['R2_value'] + '\n')
-            #             bom.append('C151' + ' ' + self.two_order_lowpass_data_2['C2_value'] + '\n')
-            #             bom.append('C157' + ' ' + self.two_order_lowpass_data_2['C1_value'] + '\n')
-            #         # module 14
-            #         if self.module14 == 'high_shelf':
-            #             # self.high_shelf_data_2 = dict(C_value='680p', R_value='220k')
-            #             bom.append('R175' + ' ' + self.high_shelf_data_2['R_value'] + '\n')
-            #             bom.append('C152' + ' ' + self.high_shelf_data_2['C_value'] + '\n')
-            #         # module 15
-            #         if self.module15 == 'low_shelf':
-            #             # self.low_shelf_data_2 = dict(C_value='680p', R_value='220k')
-            #             bom.append('C158' + ' ' + self.low_shelf_data_2['C_value'] + '\n')
-            #             bom.append('R186' + ' ' + self.low_shelf_data_2['R_value'] + '\n')
-            #         # module 16
-            #         if self.module16 == 'op_lowpass':
-            #             # self.op_lowpass_data_2 = dict(C_value='8.2n')
-            #             bom.append('C159' + ' ' + self.op_lowpass_data_2['C_value'] + '\n')
-            #         # module 17
-            #         if self.module17 == 'peak':
-            #             # self.op_peak_data_2 = dict(C1_value='12n', C2_value='12n', C_value_double='27n', R1_value='20k',
-            #             #                          R2_value='20k',R_half_value='10k', R_gain_value=0, R_high_cut='39k')
-            #             bom.append('C155' + ' ' + self.op_peak_data_2['C1_value'] + '\n')
-            #             bom.append('C156' + ' ' + self.op_peak_data_2['C2_value'] + '\n')
-            #             bom.append('C153' + ' ' + self.op_peak_data_2['C_value_double'] + '\n')
-            #             bom.append('R176' + ' ' + self.op_peak_data_2['R1_value'] + '\n')
-            #             bom.append('R177' + ' ' + self.op_peak_data_2['R2_value'] + '\n')
-            #             bom.append('R180' + ' ' + self.op_peak_data_2['R_half_value'] + '\n')
-            #             bom.append('R178' + ' ' + str(self.op_peak_data_2['R_gain_value']) + '\n')
-            #             bom.append('R179' + ' ' + self.op_peak_data_2['R_high_cut'] + '\n')
-            #             bom.append('R181' + ' ' + '0' + '\n')
-            #             bom.append('R182' + ' ' + '0' + '\n')
-            #
-            #     bom.append('LEFT CHANNEL: ' + '\n')
-            #     # module 01
-            #     if self.module01 == 'notch':
-            #         # postil = ['C2', 'C5', 'C4', 'R4', 'R7', 'R6', 'R5']
-            #         bom.append('C127' + ' ' + self.two_order_filter_data['C1_value'] + '\n')
-            #         bom.append('C128' + ' ' + self.two_order_filter_data['C2_value'] + '\n')
-            #         bom.append('C126' + ' ' + self.two_order_filter_data['C_value_double'] + '\n')
-            #         bom.append('R139' + ' ' + self.two_order_filter_data['R1_value'] + '\n')
-            #         bom.append('R140' + ' ' + self.two_order_filter_data['R2_value'] + '\n')
-            #         bom.append('R142' + ' ' + self.two_order_filter_data['R_half_value'] + '\n')
-            #         bom.append('R141' + ' ' + str(self.two_order_filter_data['R_gain_value']) + '\n')
-            #     elif self.module01 == 'highpass':
-            #         bom.append('C145' + ' ' + self.one_order_highpass_data['C_value'] + '\n')
-            #         bom.append('R159' + ' ' + self.one_order_highpass_data['R_value'] + '\n')
-            #     else:
-            #         bom.append('J29 short' + '\n')
-            #     # module 02
-            #     if self.module02 == 'notch':
-            #         # postil = ['C6', 'C9', 'C7', 'R9', 'R13', 'R12', 'R11']
-            #         bom.append('C130' + ' ' + self.two_order_filter_data_02['C1_value'] + '\n')
-            #         bom.append('C131' + ' ' + self.two_order_filter_data_02['C2_value'] + '\n')
-            #         bom.append('C139' + ' ' + self.two_order_filter_data_02['C_value_double'] + '\n')
-            #         bom.append('R143' + ' ' + self.two_order_filter_data_02['R1_value'] + '\n')
-            #         bom.append('R144' + ' ' + self.two_order_filter_data_02['R2_value'] + '\n')
-            #         bom.append('R146' + ' ' + self.two_order_filter_data_02['R_half_value'] + '\n')
-            #         bom.append('R145' + ' ' + str(self.two_order_filter_data_02['R_gain_value']) + '\n')
-            #     elif self.module02 == 'lowpass':
-            #         bom.append('C146' + ' ' + self.one_order_lowpass_data['C_value'] + '\n')
-            #         bom.append('R160' + ' ' + self.one_order_lowpass_data['R_value'] + '\n')
-            #     else:
-            #         bom.append('J30 short' + '\n')
-            #     # module 03
-            #     if self.module03 == 'op_one_order':
-            #         # self.op_gain_data = dict(Ra_value='20k', Rb_value='20k')
-            #         bom.append('R147' + ' ' + '0' + '\n')
-            #         bom.append('R148' + ' ' + self.op_gain_data['Ra_value'] + '\n')
-            #         bom.append('R161' + ' ' + self.op_gain_data['Rb_value'] + '\n')
-            #         bom.append('R157' + ' ' + '0' + '\n')
-            #     else:
-            #         # self.two_order_lowpass_data = dict(R1_value='27k', R2_value='27k', R3_value='13k', C1_value='4.7n',
-            #         #                                    C2_value='12n')
-            #         bom.append('R147' + ' ' + self.two_order_lowpass_data['R1_value'] + '\n')
-            #         bom.append('R148' + ' ' + '0' + '\n')
-            #         bom.append('R157' + ' ' + self.two_order_lowpass_data['R3_value'] + '\n')
-            #         bom.append('R208' + ' ' + self.two_order_lowpass_data['R2_value'] + '\n')
-            #         bom.append('C132' + ' ' + self.two_order_lowpass_data['C2_value'] + '\n')
-            #         bom.append('C138' + ' ' + self.two_order_lowpass_data['C1_value'] + '\n')
-            #     # module 04
-            #     if self.module04 == 'high_shelf':
-            #         # self.high_shelf_data = dict(C_value='680p', R_value='220k')
-            #         bom.append('R199' + ' ' + self.high_shelf_data['R_value'] + '\n')
-            #         bom.append('C169' + ' ' + self.high_shelf_data['C_value'] + '\n')
-            #     # module 05
-            #     if self.module05 == 'low_shelf':
-            #         # self.low_shelf_data = dict(C_value='680p', R_value='220k')
-            #         bom.append('C175' + ' ' + self.low_shelf_data['C_value'] + '\n')
-            #         bom.append('R210' + ' ' + self.low_shelf_data['R_value'] + '\n')
-            #     # module 06
-            #     if self.module06 == 'op_lowpass':
-            #         # self.op_lowpass_data = dict(C_value='8.2n')
-            #         bom.append('C176' + ' ' + self.op_lowpass_data['C_value'] + '\n')
-            #     # module 07
-            #     if self.module07 == 'peak':
-            #         # self.op_peak_data = dict(C1_value='12n', C2_value='12n', C_value_double='27n', R1_value='20k',
-            #         #                          R2_value='20k',R_half_value='10k', R_gain_value=0, R_high_cut='39k')
-            #         bom.append('C172' + ' ' + self.op_peak_data['C1_value'] + '\n')
-            #         bom.append('C173' + ' ' + self.op_peak_data['C2_value'] + '\n')
-            #         bom.append('C170' + ' ' + self.op_peak_data['C_value_double'] + '\n')
-            #         bom.append('R200' + ' ' + self.op_peak_data['R1_value'] + '\n')
-            #         bom.append('R201' + ' ' + self.op_peak_data['R2_value'] + '\n')
-            #         bom.append('R204' + ' ' + self.op_peak_data['R_half_value'] + '\n')
-            #         bom.append('R202' + ' ' + str(self.op_peak_data['R_gain_value']) + '\n')
-            #         bom.append('R203' + ' ' + self.op_peak_data['R_high_cut'] + '\n')
-            #         bom.append('R205' + ' ' + '0' + '\n')
-            #         bom.append('R206' + ' ' + '0' + '\n')
-            #
-            #     # OP 02
-            #     if self.op_model == 'two_op':
-            #         bom.append('J44 short' + '\n')
-            #         # module 11
-            #         if self.module11 == 'notch':
-            #             bom.append('C178' + ' ' + self.two_order_filter_data_11['C1_value'] + '\n')
-            #             bom.append('C179' + ' ' + self.two_order_filter_data_11['C2_value'] + '\n')
-            #             bom.append('C177' + ' ' + self.two_order_filter_data_11['C_value_double'] + '\n')
-            #             bom.append('R211' + ' ' + self.two_order_filter_data_11['R1_value'] + '\n')
-            #             bom.append('R212' + ' ' + self.two_order_filter_data_11['R2_value'] + '\n')
-            #             bom.append('R214' + ' ' + self.two_order_filter_data_11['R_half_value'] + '\n')
-            #             bom.append('R213' + ' ' + str(self.two_order_filter_data_11['R_gain_value']) + '\n')
-            #         elif self.module11 == 'highpass':
-            #             bom.append('C183' + ' ' + self.one_order_highpass_data_2['C_value'] + '\n')
-            #             bom.append('R219' + ' ' + self.one_order_highpass_data_2['R_value'] + '\n')
-            #         else:
-            #             bom.append('J45 short' + '\n')
-            #         # module 12
-            #         if self.module12 == 'notch':
-            #             bom.append('C181' + ' ' + self.two_order_filter_data_12['C1_value'] + '\n')
-            #             bom.append('C182' + ' ' + self.two_order_filter_data_12['C2_value'] + '\n')
-            #             bom.append('C180' + ' ' + self.two_order_filter_data_12['C_value_double'] + '\n')
-            #             bom.append('R215' + ' ' + self.two_order_filter_data_12['R1_value'] + '\n')
-            #             bom.append('R216' + ' ' + self.two_order_filter_data_12['R2_value'] + '\n')
-            #             bom.append('R218' + ' ' + self.two_order_filter_data_12['R_half_value'] + '\n')
-            #             bom.append('R217' + ' ' + str(self.two_order_filter_data_12['R_gain_value']) + '\n')
-            #         elif self.module12 == 'lowpass':
-            #             bom.append('C184' + ' ' + self.one_order_lowpass_data_2['C_value'] + '\n')
-            #             bom.append('R220' + ' ' + self.one_order_lowpass_data_2['R_value'] + '\n')
-            #         else:
-            #             bom.append('J46 short' + '\n')
-            #         # module 13
-            #         if self.module13 == 'op_one_order':
-            #             # self.op_gain_data_2 = dict(Ra_value='20k', Rb_value='20k')
-            #             bom.append('R221' + ' ' + '0' + '\n')
-            #             bom.append('R222' + ' ' + self.op_gain_data_2['Ra_value'] + '\n')
-            #             bom.append('R233' + ' ' + self.op_gain_data_2['Rb_value'] + '\n')
-            #             bom.append('R231' + ' ' + '0' + '\n')
-            #         else:
-            #             # self.two_order_lowpass_data_2 = dict(R1_value='27k', R2_value='27k', R3_value='13k', C1_value='4.7n',
-            #             #                                    C2_value='12n')
-            #             bom.append('R221' + ' ' + self.two_order_lowpass_data_2['R1_value'] + '\n')
-            #             bom.append('R222' + ' ' + '0' + '\n')
-            #             bom.append('R231' + ' ' + self.two_order_lowpass_data_2['R3_value'] + '\n')
-            #             bom.append('R232' + ' ' + self.two_order_lowpass_data_2['R2_value'] + '\n')
-            #             bom.append('C185' + ' ' + self.two_order_lowpass_data_2['C2_value'] + '\n')
-            #             bom.append('C191' + ' ' + self.two_order_lowpass_data_2['C1_value'] + '\n')
-            #         # module 14
-            #         if self.module14 == 'high_shelf':
-            #             # self.high_shelf_data_2 = dict(C_value='680p', R_value='220k')
-            #             bom.append('R223' + ' ' + self.high_shelf_data_2['R_value'] + '\n')
-            #             bom.append('C186' + ' ' + self.high_shelf_data_2['C_value'] + '\n')
-            #         # module 15
-            #         if self.module15 == 'low_shelf':
-            #             # self.low_shelf_data_2 = dict(C_value='680p', R_value='220k')
-            #             bom.append('C192' + ' ' + self.low_shelf_data_2['C_value'] + '\n')
-            #             bom.append('R234' + ' ' + self.low_shelf_data_2['R_value'] + '\n')
-            #         # module 16
-            #         if self.module16 == 'op_lowpass':
-            #             # self.op_lowpass_data_2 = dict(C_value='8.2n')
-            #             bom.append('C193' + ' ' + self.op_lowpass_data_2['C_value'] + '\n')
-            #         # module 17
-            #         if self.module17 == 'peak':
-            #             # self.op_peak_data_2 = dict(C1_value='12n', C2_value='12n', C_value_double='27n', R1_value='20k',
-            #             #                          R2_value='20k',R_half_value='10k', R_gain_value=0, R_high_cut='39k')
-            #             bom.append('C189' + ' ' + self.op_peak_data_2['C1_value'] + '\n')
-            #             bom.append('C190' + ' ' + self.op_peak_data_2['C2_value'] + '\n')
-            #             bom.append('C187' + ' ' + self.op_peak_data_2['C_value_double'] + '\n')
-            #             bom.append('R224' + ' ' + self.op_peak_data_2['R1_value'] + '\n')
-            #             bom.append('R225' + ' ' + self.op_peak_data_2['R2_value'] + '\n')
-            #             bom.append('R228' + ' ' + self.op_peak_data_2['R_half_value'] + '\n')
-            #             bom.append('R226' + ' ' + str(self.op_peak_data_2['R_gain_value']) + '\n')
-            #             bom.append('R227' + ' ' + self.op_peak_data_2['R_high_cut'] + '\n')
-            #             bom.append('R229' + ' ' + '0' + '\n')
-            #             bom.append('R230' + ' ' + '0' + '\n')
         else:
             # module 01
             if self.module01 == 'notch':
@@ -2206,6 +1628,7 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
                     settings.value('module01/radioButton_highpass', type=bool))
                 self.filter01_radioButton_bypass.setChecked(settings.value('module01/radioButton_bypass', type=bool))
                 self.frequencySpin_highpass.setValue(settings.value('module01/highpass_frequency', 1000, type=int))
+                self.highpass_gain_spin.setValue(settings.value('module01/highpass_gain', 0, type=int))
                 if self.notch01_status:
                     self.two_order_filter_data = settings.value('module01/tuning_data', self.two_order_filter_data,
                                                                 type=dict)
@@ -2374,6 +1797,7 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
             settings.setValue('radioButton_bypass', self.filter01_radioButton_bypass.isChecked())
             settings.setValue('radioButton_highpass', self.filter01_radioButton_highpass.isChecked())
             settings.setValue('highpass_frequency', self.frequencySpin_highpass.value())
+            settings.setValue('highpass_gain', self.highpass_gain_spin.value())
             settings.setValue('tuning_status', self.notch01_status)
             settings.setValue('tuning_data', self.two_order_filter_data)
             settings.endGroup()
@@ -2506,6 +1930,7 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
         self.amplitudeSlider.setValue(0)
         self.filter01_radioButton_bypass.setChecked(True)
         self.frequencySpin_highpass.setValue(1000)
+        self.highpass_gain_spin.setValue(0)
 
         # module02配置
         self.notch02_status = False

@@ -98,7 +98,7 @@ class MyNetlistCreate(object):
                                           R2_value='2.2k', R_half_value='1.1k', R_gain_value=0)
         self.two_order_filter_data_02 = dict(C1_value='68n', C2_value='68n', C_value_double='150n', R1_value='2.2k',
                                              R2_value='2.2k', R_half_value='1.1k', R_gain_value=0)
-        self.one_order_highpass_data = dict(C_value='68n', R_value='2.2k')
+        self.one_order_highpass_data = dict(C_value='68n', R_value='2.2k', R2_value='2.2k')
         self.one_order_lowpass_data = dict(C_value='68n', R_value='2.2k')
         self.op_gain_data = dict(Ra_value='20k', Rb_value='20k')
         self.op_lowpass_data = dict(C_value='3.9p')
@@ -180,9 +180,11 @@ class MyNetlistCreate(object):
             self.circuit.subcircuit(My_two_order_filter(**self.two_order_filter_data))
             self.circuit.X('filter01', 'My_two_order_filter', 'input', 'out01')
         elif module == 'highpass':
-            self.circuit.subcircuit(My_one_order_highpass(**self.one_order_highpass_data))
-            self.circuit.X('filter01', 'My_one_order_highpass', 'input', 'out01')
+            # self.circuit.subcircuit(My_one_order_highpass(**self.one_order_highpass_data))
+            # self.circuit.X('filter01', 'My_one_order_highpass', 'input', 'out01')
             # print('highpass filter 01 set OK')
+            self.circuit.subcircuit(My_one_order_highpass_mode2(**self.one_order_highpass_data))
+            self.circuit.X('filter01', 'My_one_order_highpass_mode2', 'input', 'out01')
         else:
             self.circuit.R('01', 'input', 'out01', 0)
             # print('bypass filter 01 set OK')

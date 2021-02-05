@@ -105,6 +105,22 @@ class My_one_order_highpass(SubCircuitFactory):
         self.C('1', 'in1', 'out', C_value)
 
 
+class My_one_order_highpass_mode2(SubCircuitFactory):
+    """1阶高通滤波器,低频旁通
+    电阻默认阻值：R_value='2.2k'
+    电容默认阻值：C_value='68n'
+    默认截止频率：f=1/(2*pi*R*C)
+    """
+    __name__ = 'My_one_order_highpass_mode2'
+    __nodes__ = ('in1', 'out')
+
+    def __init__(self, C_value='68n', R_value='2.2k', R2_value='1000k'):
+        super().__init__()
+        self.R('1', 'out', self.gnd, R_value)
+        self.C('1', 'in1', 'out', C_value)
+        self.R('2', 'in1', 'out', R2_value)
+
+
 class My_one_order_lowpass(SubCircuitFactory):
     """1阶低通滤波器
     电阻默认阻值：R_value='2.2k'
