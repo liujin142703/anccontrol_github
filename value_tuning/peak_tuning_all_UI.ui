@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>884</width>
-    <height>672</height>
+    <width>943</width>
+    <height>707</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,15 +19,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>476</x>
+     <x>472</x>
      <y>224</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -46,6 +46,11 @@
      <height>680</height>
     </size>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string/>
    </property>
@@ -58,16 +63,21 @@
     <rect>
      <x>716</x>
      <y>284</y>
-     <width>161</width>
-     <height>373</height>
+     <width>213</width>
+     <height>389</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <widget class="QCheckBox" name="checkBox_peak">
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>9</pointsize>
        </font>
       </property>
       <property name="text">
@@ -79,7 +89,7 @@
      <widget class="QCheckBox" name="checkBox_hs">
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>9</pointsize>
        </font>
       </property>
       <property name="text">
@@ -91,7 +101,7 @@
      <widget class="QCheckBox" name="checkBox_ls">
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>9</pointsize>
        </font>
       </property>
       <property name="text">
@@ -103,7 +113,7 @@
      <widget class="QCheckBox" name="checkBox_lp">
       <property name="font">
        <font>
-        <pointsize>15</pointsize>
+        <pointsize>9</pointsize>
        </font>
       </property>
       <property name="text">
@@ -115,7 +125,7 @@
      <widget class="QPushButton" name="pushButton_OK">
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>9</pointsize>
        </font>
       </property>
       <property name="text">
@@ -127,7 +137,7 @@
      <widget class="QPushButton" name="pushButton_Cancel">
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>9</pointsize>
        </font>
       </property>
       <property name="text">
@@ -143,15 +153,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>352</x>
+     <x>348</x>
      <y>224</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -161,15 +171,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>456</x>
+     <x>452</x>
      <y>92</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -179,15 +189,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>456</x>
+     <x>452</x>
      <y>144</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -197,15 +207,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>354</x>
+     <x>350</x>
      <y>20</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -215,15 +225,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>472</x>
+     <x>468</x>
      <y>20</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -233,15 +243,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>452</x>
+     <x>448</x>
      <y>320</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -251,15 +261,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>268</x>
+     <x>264</x>
      <y>224</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -269,15 +279,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>112</x>
+     <x>108</x>
      <y>276</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -287,15 +297,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>88</x>
+     <x>84</x>
      <y>368</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -305,15 +315,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>156</x>
+     <x>152</x>
      <y>368</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -323,15 +333,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>344</x>
+     <x>340</x>
      <y>472</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -341,15 +351,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>344</x>
+     <x>340</x>
      <y>608</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -359,15 +369,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>344</x>
+     <x>340</x>
      <y>532</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>
@@ -377,15 +387,15 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>508</x>
+     <x>504</x>
      <y>536</y>
-     <width>58</width>
-     <height>22</height>
+     <width>66</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
   </widget>

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1312</width>
-    <height>711</height>
+    <width>1332</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -36,8 +36,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1307</width>
-      <height>672</height>
+      <width>1317</width>
+      <height>709</height>
      </rect>
     </property>
     <property name="focusPolicy">
@@ -53,7 +53,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="iconSize">
      <size>
@@ -92,8 +92,8 @@
        <rect>
         <x>1104</x>
         <y>23</y>
-        <width>200</width>
-        <height>129</height>
+        <width>213</width>
+        <height>141</height>
        </rect>
       </property>
       <property name="title">
@@ -175,9 +175,9 @@
       <property name="geometry">
        <rect>
         <x>1204</x>
-        <y>348</y>
-        <width>100</width>
-        <height>85</height>
+        <y>368</y>
+        <width>113</width>
+        <height>97</height>
        </rect>
       </property>
       <property name="title">
@@ -213,10 +213,10 @@
      <widget class="QGroupBox" name="groupBox_36">
       <property name="geometry">
        <rect>
-        <x>1092</x>
-        <y>500</y>
-        <width>221</width>
-        <height>137</height>
+        <x>1104</x>
+        <y>528</y>
+        <width>217</width>
+        <height>145</height>
        </rect>
       </property>
       <property name="title">
@@ -297,9 +297,9 @@
       <property name="geometry">
        <rect>
         <x>1104</x>
-        <y>156</y>
-        <width>200</width>
-        <height>104</height>
+        <y>163</y>
+        <width>213</width>
+        <height>125</height>
        </rect>
       </property>
       <property name="title">
@@ -390,8 +390,8 @@
        <rect>
         <x>4</x>
         <y>4</y>
-        <width>1091</width>
-        <height>636</height>
+        <width>1093</width>
+        <height>673</height>
        </rect>
       </property>
       <property name="currentIndex">
@@ -1380,7 +1380,7 @@
           <x>898</x>
           <y>6</y>
           <width>170</width>
-          <height>491</height>
+          <height>513</height>
          </rect>
         </property>
         <property name="title">
@@ -1408,7 +1408,7 @@
            <x>0</x>
            <y>356</y>
            <width>170</width>
-           <height>69</height>
+           <height>81</height>
           </rect>
          </property>
          <property name="title">
@@ -1461,9 +1461,9 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>424</y>
+           <y>432</y>
            <width>85</width>
-           <height>69</height>
+           <height>73</height>
           </rect>
          </property>
          <property name="title">
@@ -1493,9 +1493,9 @@
          <property name="geometry">
           <rect>
            <x>84</x>
-           <y>424</y>
+           <y>432</y>
            <width>85</width>
-           <height>69</height>
+           <height>73</height>
           </rect>
          </property>
          <property name="title">
@@ -1670,7 +1670,7 @@
           <x>20</x>
           <y>496</y>
           <width>879</width>
-          <height>110</height>
+          <height>125</height>
          </rect>
         </property>
         <property name="title">
@@ -1680,9 +1680,9 @@
          <property name="geometry">
           <rect>
            <x>120</x>
-           <y>0</y>
+           <y>1</y>
            <width>700</width>
-           <height>110</height>
+           <height>109</height>
           </rect>
          </property>
          <property name="text">
@@ -1698,7 +1698,7 @@
            <x>0</x>
            <y>10</y>
            <width>106</width>
-           <height>91</height>
+           <height>113</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -1743,7 +1743,7 @@
         <property name="geometry">
          <rect>
           <x>898</x>
-          <y>496</y>
+          <y>512</y>
           <width>170</width>
           <height>109</height>
          </rect>
@@ -3344,9 +3344,9 @@
       <property name="geometry">
        <rect>
         <x>1104</x>
-        <y>264</y>
-        <width>200</width>
-        <height>81</height>
+        <y>288</y>
+        <width>213</width>
+        <height>77</height>
        </rect>
       </property>
       <property name="title">
@@ -3390,9 +3390,9 @@
       <property name="geometry">
        <rect>
         <x>1104</x>
-        <y>432</y>
-        <width>201</width>
-        <height>65</height>
+        <y>460</y>
+        <width>213</width>
+        <height>69</height>
        </rect>
       </property>
       <property name="title">
@@ -3422,9 +3422,9 @@
       <property name="geometry">
        <rect>
         <x>1104</x>
-        <y>348</y>
+        <y>368</y>
         <width>101</width>
-        <height>85</height>
+        <height>97</height>
        </rect>
       </property>
       <property name="title">
@@ -3477,7 +3477,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>245</y>
+        <y>253</y>
         <width>256</width>
         <height>176</height>
        </rect>
@@ -3493,7 +3493,7 @@
       <property name="geometry">
        <rect>
         <x>44</x>
-        <y>34</y>
+        <y>42</y>
         <width>160</width>
         <height>190</height>
        </rect>
@@ -3551,9 +3551,9 @@
       <property name="geometry">
        <rect>
         <x>243</x>
-        <y>2</y>
-        <width>836</width>
-        <height>641</height>
+        <y>10</y>
+        <width>841</width>
+        <height>649</height>
        </rect>
       </property>
       <property name="currentIndex">
@@ -5921,7 +5921,7 @@
       <property name="geometry">
        <rect>
         <x>1088</x>
-        <y>352</y>
+        <y>360</y>
         <width>211</width>
         <height>285</height>
        </rect>
@@ -6007,7 +6007,7 @@
       <property name="geometry">
        <rect>
         <x>85</x>
-        <y>300</y>
+        <y>308</y>
         <width>24</width>
         <height>16</height>
        </rect>
@@ -6020,7 +6020,7 @@
       <property name="geometry">
        <rect>
         <x>85</x>
-        <y>324</y>
+        <y>332</y>
         <width>60</width>
         <height>20</height>
        </rect>
@@ -6054,7 +6054,7 @@
       <property name="geometry">
        <rect>
         <x>1088</x>
-        <y>20</y>
+        <y>28</y>
         <width>209</width>
         <height>213</height>
        </rect>
@@ -7516,8 +7516,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1312</width>
-     <height>23</height>
+     <width>1332</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -7569,18 +7569,18 @@
  </resources>
  <connections>
   <connection>
-   <sender>peak_attenuation_slider</sender>
+   <sender>peak_attenuation_slider_2</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>label_59</receiver>
+   <receiver>label_61</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>821</x>
-     <y>184</y>
+     <x>829</x>
+     <y>187</y>
     </hint>
     <hint type="destinationlabel">
-     <x>796</x>
-     <y>185</y>
+     <x>797</x>
+     <y>186</y>
     </hint>
    </hints>
   </connection>
@@ -7601,22 +7601,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>peak_attenuation_slider_2</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>label_61</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>829</x>
-     <y>187</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>797</x>
-     <y>186</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>peak_lowpass_slider_2</sender>
    <signal>valueChanged(int)</signal>
    <receiver>label_60</receiver>
@@ -7629,6 +7613,22 @@
     <hint type="destinationlabel">
      <x>795</x>
      <y>206</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>peak_attenuation_slider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>label_59</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>821</x>
+     <y>184</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>796</x>
+     <y>185</y>
     </hint>
    </hints>
   </connection>

@@ -9,7 +9,7 @@ from value_tuning.peak_tuning_all_UI import Ui_Dialog
 
 
 class MyPeakFilterTuningAllDialog(QtWidgets.QDialog, Ui_Dialog):
-    signal = QtCore.pyqtSignal(dict, bool)
+    signal = QtCore.pyqtSignal(dict, bool, dict, bool, dict, bool, dict, bool, dict)
 
     def __init__(self, argv_peak, module_peak, argv_ls, module_ls, argv_hs, module_hs, argv_lp, module_lp, argv_gain):
         """
@@ -23,9 +23,14 @@ class MyPeakFilterTuningAllDialog(QtWidgets.QDialog, Ui_Dialog):
         self.data_hs = argv_hs
         self.data_lp = argv_lp
         self.data_gain = argv_gain
+        self.peak_enable = module_peak
+        self.ls_enable = module_ls
+        self.hs_enable = module_hs
+        self.lp_enable = module_lp
         self.setupUi(self)
         self.set_items()
-        self.set_initial_value(argv_peak, module_peak)
+        self.set_initial_value(argv_peak, module_peak, argv_ls, module_ls, argv_hs, module_hs, argv_lp, module_lp,
+                               argv_gain)
         self.signal_slot()
 
     def set_items(self):
@@ -51,8 +56,9 @@ class MyPeakFilterTuningAllDialog(QtWidgets.QDialog, Ui_Dialog):
                    '110k', '120k', '130k', '150k', '160k', '180k', '200k',
                    '220k', '240k', '270k', '300k', '330k', '360k',
                    '390k', '430k', '470k', '510k', '560k', '620k', '680k', '750k', '820k', '910k', '1000k',
-                   '1100k', '1200k', '1500k', '1600k', '1800k', '2000k', '2200k', '2400k', '2700k', '3000k', '3300k', '3600k',
-                   '3900k', '4300k', '4700k', '5100k', '5600k', '6200k', '6800k', '7500k', '8200k', '9100k', '10000k',]
+                   '1100k', '1200k', '1500k', '1600k', '1800k', '2000k', '2200k', '2400k', '2700k', '3000k', '3300k',
+                   '3600k',
+                   '3900k', '4300k', '4700k', '5100k', '5600k', '6200k', '6800k', '7500k', '8200k', '9100k', '10000k', ]
         c_items = ['10p', '12p', '15p', '18p', '22p', '27p', '33p', '39p', '47p', '56p', '68p', '82p',
                    '100p', '120p', '150p', '180p', '220p', '270p', '330p', '390p', '470p', '560p', '680p', '820p',
                    '1n', '1.2n', '1.5n', '1.8n', '2.2n', '2.7n', '3.3n', '3.9n', '4.7n', '5.6n', '6.8n', '8.2n',
@@ -134,6 +140,7 @@ class MyPeakFilterTuningAllDialog(QtWidgets.QDialog, Ui_Dialog):
 
     def set_combobox_enabled(self):
         if self.checkBox_peak.isChecked():
+            self.peak_enable = True
             self.R1.setEnabled(True)
             self.R2.setEnabled(True)
             self.R3.setEnabled(True)
@@ -143,6 +150,7 @@ class MyPeakFilterTuningAllDialog(QtWidgets.QDialog, Ui_Dialog):
             self.C2.setEnabled(True)
             self.C3.setEnabled(True)
         else:
+            self.peak_enable = False
             self.R1.setEnabled(False)
             self.R2.setEnabled(False)
             self.R3.setEnabled(False)
@@ -152,21 +160,34 @@ class MyPeakFilterTuningAllDialog(QtWidgets.QDialog, Ui_Dialog):
             self.C2.setEnabled(False)
             self.C3.setEnabled(False)
         if self.checkBox_ls.isChecked():
+            self.ls_enable = True
             self.R7.setEnabled(True)
             self.C5.setEnabled(True)
         else:
+            self.ls_enable = False
             self.R7.setEnabled(False)
             self.C5.setEnabled(False)
         if self.checkBox_hs.isChecked():
+            self.hs_enable = True
             self.R6.setEnabled(True)
             self.C4.setEnabled(True)
         else:
+            self.hs_enable = False
             self.R6.setEnabled(False)
             self.C4.setEnabled(False)
         if self.checkBox_lp.isChecked():
+            self.lp_enable = True
             self.C6.setEnabled(True)
         else:
+            self.lp_enable = False
             self.C6.setEnabled(False)
+        if self.checkBox_peak.isChecked() or self.checkBox_ls.isChecked()\
+                or self.checkBox_hs.isChecked() or self.checkBox_lp.isChecked():
+            self.Ra.setEnabled(True)
+            self.Rb.setEnabled(True)
+        else:
+            self.Ra.setEnabled(False)
+            self.Rb.setEnabled(False)
 
     def set_data_value(self, i=None):
         # peak
@@ -191,28 +212,29 @@ class MyPeakFilterTuningAllDialog(QtWidgets.QDialog, Ui_Dialog):
         self.data_gain['Rb_value'] = self.Rb.currentText()
 
     def return_data(self):
-        if self.checkBox.isChecked():
-            self.signal.emit(self.data_peak, True)
-            self.accept()
-        else:
-            self.signal.emit(self.data_peak, False)
-            self.accept()
+        self.signal.emit(self.data_peak, self.peak_enable, self.data_ls, self.ls_enable, self.data_hs, self.hs_enable,
+                         self.data_lp, self.lp_enable, self.data_gain)
+        self.accept()
 
 
 if __name__ == "__main__":
-    data = dict(C1_value='12n', C2_value='12n', C_value_double='27n', R1_value='20k', R2_value='20k',
-                R_half_value='10k', R_gain_value=2.2, R_high_cut='39k')
+    data_peak = dict(C1_value='12n', C2_value='12n', C_value_double='27n', R1_value='20k', R2_value='20k',
+                     R_half_value='10k', R_gain_value=2.2, R_high_cut='39k')
+    data_ls = dict(C_value='12n', R_value='20k')
+    data_hs = dict(C_value='12n', R_value='20k')
+    data_lp = dict(C_value='12n')
+    data_gain = dict(Ra_value='20k', Rb_value='20k')
 
     app = QtWidgets.QApplication(sys.argv)
-    myWin = MyPeakFilterTuningAllDialog(data, False)
+    myWin = MyPeakFilterTuningAllDialog(data_peak, True, data_ls, True, data_hs, True, data_lp, True, data_gain)
 
 
-    def set_data(data, bool):
-        if bool:
-            data1 = data
-            print(data1)
-        else:
-            data1 = data
+    def set_data(data, bool0, data1, bool1, data2, bool2, data3, bool3, data4):
+        print(data)
+        print(data1)
+        print(data2)
+        print(data3)
+        print(data4)
 
 
     myWin.signal.connect(set_data)

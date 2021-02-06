@@ -15,6 +15,7 @@ from includes.my_netlist_create import *  # 根据UI界面参数创建电路图
 from value_tuning.notch_tuning_main import MyNotchFilterTuningDialog
 from value_tuning.peak_tuning_main import MyPeakFilterTuningDialog
 from value_tuning.two_order_lowpass_tuning_main import MyTwoOrderLowpassTuningDialog
+from value_tuning.peak_tuning_all_main import MyPeakFilterTuningAllDialog
 from FB_Filter_main import SetOp2Window
 from EQ_Filter_main import SetEqWindow
 from config import BOM_version
@@ -108,6 +109,9 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
         self.notch01_status = False  # 手动调整增益开关
         self.notch02_status = False
         self.peak01_status = False
+        self.hs01_status = False
+        self.ls01_status = False
+        self.lp01_status = False
         self.two_order_lowpass_status = False
 
     def set_default_font(self):
@@ -205,7 +209,7 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
 
         self.btn_notch01_tuning.clicked.connect(self.notch01_tuning)  # tuning
         self.btn_notch02_tuning.clicked.connect(self.notch02_tuning)
-        self.btn_peak01_tuning.clicked.connect(self.peak01_tuning)
+        self.btn_peak01_tuning.clicked.connect(self.peak01_tuning_all)
         self.btn_two_order_lowpass_tuning.clicked.connect(self.two_order_lowpass_tuning)
 
     # FF/FB设计选择
@@ -486,15 +490,22 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
 
     # module 06 op lowpass
     def set_module_06(self):
-        self.groupBox_9.setEnabled(False)
-        self.groupBox_10.setEnabled(False)
-        self.groupBox_4.setEnabled(True)  # 启用low shelf, high shelf, peak
-        self.groupBox_5.setEnabled(True)
-        self.groupBox_6.setEnabled(True)
-        self.label_15.setPixmap(QtGui.QPixmap(':/mic/icon/lowpass.png'))
-        self.module03 = 'op_one_order'
-        self.module06 = 'op_lowpass'
-        self.set_module_06_data()
+        if self.OP_lowpass_filter_enable.isChecked() and self.OP_lowpass_order_radio_one.isChecked():
+            self.groupBox_9.setEnabled(False)
+            self.groupBox_10.setEnabled(False)
+            self.groupBox_4.setEnabled(True)  # 启用low shelf, high shelf, peak
+            self.groupBox_5.setEnabled(True)
+            self.groupBox_6.setEnabled(True)
+            self.label_15.setPixmap(QtGui.QPixmap(':/mic/icon/lowpass.png'))
+            self.module03 = 'op_one_order'
+            self.module06 = 'op_lowpass'
+            self.set_module_06_data()
+        elif self.OP_lowpass_filter_enable.isChecked() and self.OP_lowpass_order_radio_two.isChecked():
+            self.module03 = 'op_two_order'
+            self.module06 = None
+        else:
+            self.module03 = 'op_one_order'
+            self.module06 = None
 
     def set_module_06_data(self):
         gain = self.OP_gain_spin.value()
@@ -581,7 +592,6 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
     # module 08 two order lowpass
     def set_module_08(self):
         if self.OP_lowpass_filter_enable.isChecked() and self.OP_lowpass_order_radio_two.isChecked():
-
             self.OP_lowshelf_filter_enable.setChecked(False)  # 关闭low shelf,high shelf,peak
             self.OP_highshelf_filter_enable.setChecked(False)
             self.OP_peak_filter_enable.setChecked(False)
@@ -2028,8 +2038,7 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
         self.set_module_17()
         self.AimCurveInButton.setDefault(False)
 
-    # tuning
-    # module 01
+    # tuning module 01
     def set_notch01_parameter(self, data, status):
         """根据tuning对话框返回值设置参数及UI界面"""
         self.notch01_status = status
@@ -2141,7 +2150,68 @@ class FilterDesignerWindow(SetOp2Window, SetEqWindow):
         dialog = MyPeakFilterTuningDialog(self.op_peak_data, self.peak01_status)
         dialog.signal.connect(self.set_peak01_parameter)
         dialog.exec_()
-        # print('对话框结束03', self.op_peak_data, self.peak01_status)
+
+    def set_peak01_all_parameter(self, argv_peak, module_peak, argv_ls, module_ls, argv_hs, module_hs, argv_lp,
+                                 module_lp, argv_gain):
+        self.peak01_status = module_peak
+        self.ls01_status = module_ls
+        self.hs01_status = module_hs
+        self.lp01_status = module_lp
+        if module_peak:
+            self.op_peak_data = argv_peak
+            self.module07 = 'peak'
+        else:
+            self.module07 = None
+        if module_ls:
+            self.low_shelf_data = argv_ls
+            self.module05 = 'low_shelf'
+        else:
+            self.module05 = None
+        if module_hs:
+            self.high_shelf_data = argv_hs
+            self.module04 = 'high_shelf'
+        else:
+            self.module04 = None
+        if module_lp:
+            self.op_lowpass_data = argv_lp
+            self.module06 = 'op_lowpass'
+        else:
+            self.module06 = None
+        if module_peak or module_ls or module_hs or module_lp:
+            self.btn_peak01_tuning.setDefault(True)  # 按键标记
+            self.groupBox_4.setEnabled(False)
+            self.groupBox_5.setEnabled(False)
+            self.groupBox_6.setEnabled(False)
+            self.groupBox_7.setEnabled(False)
+            self.label_11.setPixmap(QtGui.QPixmap(':/mic/icon/tuning.png'))
+            self.label_12.setPixmap(QtGui.QPixmap(':/mic/icon/tuning.png'))
+            self.label_13.setPixmap(QtGui.QPixmap(':/mic/icon/tuning.png'))
+            self.label_15.setPixmap(QtGui.QPixmap(':/mic/icon/tuning.png'))
+            self.op_gain_data = argv_gain
+        else:
+            self.btn_peak01_tuning.setDefault(False)  # 按键标记
+            self.groupBox_4.setEnabled(True)
+            self.groupBox_5.setEnabled(True)
+            self.groupBox_6.setEnabled(True)
+            self.groupBox_7.setEnabled(True)
+            self.label_11.setPixmap(QtGui.QPixmap(':/mic/icon/peak.png'))
+            self.label_12.setPixmap(QtGui.QPixmap(":/mic/icon/LowShelf.png"))
+            self.label_13.setPixmap(QtGui.QPixmap(":/mic/icon/HighShelf.png"))
+            self.label_15.setPixmap(QtGui.QPixmap(":/mic/icon/lowpass.png"))
+            self.set_module_03()
+            self.set_module_04()
+            self.set_module_05()
+            # self.set_module_06()
+            self.set_module_07()
+            # self.set_module_08()
+
+
+    def peak01_tuning_all(self):
+        dialog = MyPeakFilterTuningAllDialog(self.op_peak_data,self.peak01_status, self.low_shelf_data,
+                                             self.ls01_status, self.high_shelf_data, self.hs01_status,
+                                             self.op_lowpass_data, self.lp01_status, self.op_gain_data)
+        dialog.signal.connect(self.set_peak01_all_parameter)
+        dialog.exec_()
 
     # two order lowpass
     def set_two_order_lowpass_parameter(self, data, status):
